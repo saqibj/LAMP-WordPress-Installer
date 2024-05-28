@@ -10,7 +10,7 @@ fi
 apt update && apt upgrade -y
 
 # Install necessary dependencies
-apt install -y wget curl software-properties-common gnupg2
+apt install -y wget curl software-properties-common gnupg2 debconf-utils
 
 # Install Apache
 apt install apache2 -y
@@ -98,11 +98,15 @@ a2dissite 000-default
 # Restart Apache to apply changes
 systemctl restart apache2
 
-# Install PHPMyAdmin
-echo "Enter the MySQL root password for PHPMyAdmin setup:"
-read -s rootpasswd
+# Preconfigure PHPMyAdmin
+echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/app-password-confirm password $rootpasswd" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/mysql/admin-pass password $rootpasswd" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/mysql/app-pass password $rootpasswd" | debconf-set-selections
+echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" | debconf-set-selections
 
-apt install phpmyadmin php-mbstring php-zip php-gd php-json php-curl -y
+# Install PHPMyAdmin
+apt install phpmyadmin -y
 
 # Enable PHPMyAdmin configuration in Apache
 tee /etc/apache2/conf-available/phpmyadmin.conf > /dev/null <<EOL

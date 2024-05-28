@@ -47,7 +47,7 @@ The script will prompt you for the following inputs:
 8. Sets the correct permissions for WordPress files.
 9. Prompts for and sets the ServerAdmin email address in Apache configuration.
 10. Configures Apache to serve the WordPress site.
-11. Installs and configures PHPMyAdmin for database management.
+11. Preconfigures and installs PHPMyAdmin for database management.
 12. Provides the real IP address and hostname for accessing the WordPress site and PHPMyAdmin.
 
 ## Accessing the Services
@@ -65,3 +65,4 @@ The script will clean up temporary files used during the installation process.
 
 - Ensure that the necessary ports (80 for HTTP) are open on your server's firewall.
 - The script must be run as root to perform all the required tasks.
+- The script preconfigures PHPMyAdmin to use the MySQL root password provided during the prompt.
